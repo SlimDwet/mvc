@@ -62,4 +62,20 @@ class Router {
 			else throw new Exception("La méthode ".self::$action." du controller $controller_file n'existe pas");
 	}
 
+	/**
+	 * [getController Retourne le controller]
+	 * @return [type] [description]
+	 */
+	public static function getController() {
+		return self::$controller;
+	}
+
+	/**
+	 * [getAction Retourne l'action]
+	 * @return [type] [description]
+	 */
+	public static function getAction() {
+		return self::$action;
+	}
+
 }

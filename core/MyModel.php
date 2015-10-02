@@ -2,7 +2,7 @@
 
 class MyModel {
 
-	private $table;
+	protected $table;
 
 	public function __construct() {
 		$this->getTable();
@@ -17,8 +17,12 @@ class MyModel {
 	/**
 	 * Retourne la liste de résultats recherchés
 	 */
-	public function select($fields = array(), $where = array()) {
+	public function select() {
 		global $bdd;
+
+		$args = func_get_args();
+		$fields = is_null($item = array_shift($args)) ? array() : $item;
+		$where = is_null($item = array_shift($args)) ? array() : $item;
 
 		switch (empty($fields)) {
 			case true:
@@ -46,7 +50,11 @@ class MyModel {
 	/**
 	 * Insert des données en BDD
 	 */
-	public function insert($fields = array(), $datas = array()) {
+	public function insert() {
+		$args = func_get_args();
+		$fields = is_null($item = array_shift($args)) ? array() : $item;
+		$datas = is_null($item = array_shift($args)) ? array() : $item;
+
 		if(empty($fields)) throw new Exception("Le champs d'ajout est inexistant", 1);
 		if(empty($datas)) throw new Exception("La(s) valeur(s) est/sont d'ajout inexistante", 1);
 
@@ -63,13 +71,20 @@ class MyModel {
 		}
 		$sql .= $values;
 
-		return $this->getExec($sql);
+		$result = $this->getExec($sql);
+		if($result === false) throw new Exception("Une erreur s'est produite lors de l'ajout");
+
+		return $result;
 	}
 
 	/**
 	 * Met à jour des données en BDD
 	 */
-	public function update($condition = 1, $datas = array()) {
+	public function update() {
+		$args = func_get_args();
+		$conditions = is_null($item = array_shift($args)) ? 1 : $item;
+		$datas = is_null($item = array_shift($args)) ? array() : $item;
+
 		if(empty($datas)) throw new Exception("La valeur de MAJ est inexistante", 1);
 
 		$sql = "UPDATE ".$this->table.' SET ';
@@ -80,7 +95,10 @@ class MyModel {
 		}
 
 		$sql .= " WHERE $condition";prd($sql);
-		return $this->getExec($sql);
+		$result = $this->getExec($sql);
+		if($result === false) throw new Exception("Une erreur s'est produite lors de la MAJ");
+		
+		return $result;
 	}
 
 	/**
@@ -89,18 +107,28 @@ class MyModel {
 	 * @param  $condition string : Condition(s) de suppression
 	 * @return [type]
 	 */
-	public function delete($condition = 1) {
+	public function delete() {
+		$args = func_get_args();
+		$conditions = is_null($item = array_shift($args)) ? 1 : $item;
 
 		$sql = "DELETE FROM $this->table WHERE $condition";prd($sql);
-		return $this->getExec($sql);
+		$result = $this->getExec($sql);
+		if($result === false) throw new Exception("Une erreur s'est produite lors de la suppression");
+		
+		return $result;
 	}
 
-	public function truncate($table) {
-		if(gettype($table) !== 'string') throw new Exception("La table fournie est invalide");
+	/**
+	 * [truncate On vide la table]
+	 * @return [type] [description]
+	 */
+	public function truncate() {
 
-		$this->table = $table;
-		$sql = "TRUNCATE TABLE $this->table";//prd($sql);
-		return $this->getQuery($sql);
+		$sql = "TRUNCATE TABLE $this->table";prd($sql);
+		$return = $this->getQuery($sql);
+		if($result === false) throw new Exception("Une erreur s'est produite lors du vidage de la table");
+		
+		return $result;
 	}
 
 	private function formateData($value) {
@@ -117,7 +145,9 @@ class MyModel {
 		} catch(PDOException $e) {
 			die("Une erreur s'est produite : ".$e->getMessage());
 		}
-		return empty($fields) ? $req->fetchAll(PDO::FETCH_OBJ) : $req->fetch(PDO::FETCH_OBJ);
+		if($req) return empty($fields) ? $req->fetchAll(PDO::FETCH_OBJ) : $req->fetch(PDO::FETCH_OBJ);
+
+		return false;
 	}
 
 	/**

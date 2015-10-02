@@ -5,7 +5,11 @@ class HomeController extends MyController {
 	protected $models = array('Home');
 
 	public function index() {
-		echo "<h1>Je suis la Home</h1>";
+		$this->set(array('prenom' => 'Evans'));
+	}
+
+	public function liste() {
+		echo "Klass it is baby, yes it is baby !!";
 	}
 
 }

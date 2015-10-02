@@ -19,6 +19,11 @@ function prd($data) {
 	die;
 }
 
+function vdd($data) {
+	var_dump($data);
+	die;
+}
+
 /**
  * Vérifie si les données en config sont valides
  */
@@ -33,5 +38,20 @@ function checkConfig() {
 			echo $err."<br>";
 		}
 		die;
+	}
+}
+
+if(!function_exists('getCaller')) {
+	/**
+	 * [getCaller Retourne le nom et la méthode de la classe appelante]
+	 * @return [type] [description]
+	 */
+	function getCaller() {
+		$data = array();
+		$db_bk = debug_backtrace();
+		$data['controller'] = $db_bk[1]['class'];
+		$data['action'] = $db_bk[1]['function'];
+
+		return $data;
 	}
 }
