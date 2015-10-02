@@ -40,18 +40,3 @@ function checkConfig() {
 		die;
 	}
 }
-
-if(!function_exists('getCaller')) {
-	/**
-	 * [getCaller Retourne le nom et la méthode de la classe appelante]
-	 * @return [type] [description]
-	 */
-	function getCaller() {
-		$data = array();
-		$db_bk = debug_backtrace();
-		$data['controller'] = $db_bk[1]['class'];
-		$data['action'] = $db_bk[1]['function'];
-
-		return $data;
-	}
-}
