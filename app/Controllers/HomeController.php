@@ -5,6 +5,7 @@ class HomeController extends MyController {
 	protected $models = array('Home');
 
 	public function index() {
+		$this->View->addStyles(array('styles'));
 		$this->set(array('prenom' => 'Evans'));
 	}
 

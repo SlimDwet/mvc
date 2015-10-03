@@ -14,6 +14,7 @@ spl_autoload_register('loadAppClass');
 // Debug
 function prd($data) {
 	echo "<pre>";
+	echo "<pre>";
 	print_r($data);
 	echo "</pre>";
 	die;

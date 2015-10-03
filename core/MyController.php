@@ -3,10 +3,11 @@
 class MyController {
 
 	protected $models = array();
-	protected $caller;
+	protected $View;
 
 	public function __construct() {
 		$this->getModels();
+		if(is_null($this->View)) $this->View = new MyView(); // Objet gérant les vues
 	}
 
 	/**
@@ -14,19 +15,19 @@ class MyController {
 	 * @param array $data [description]
 	 */
 	public function set($data = array()) {
+
 		$header = APP_DIR.'Views/default/header.php';
 		$footer = APP_DIR.'Views/default/footer.php';
 		if(!file_exists($header)) throw new Exception("La vue header est manquante");
 		if(!file_exists($footer)) throw new Exception("La vue footer est manquante");
-		
 
-		$view = APP_DIR.'Views/'.ucfirst(strtolower(Router::getController())).'/'.strtolower(Router::getAction()).'.php';
-		if(!file_exists($view)) throw new Exception("La vue de l'action est introuvable");
+		$current_view = APP_DIR.'Views/'.ucfirst(strtolower(Router::getController())).'/'.strtolower(Router::getAction()).'.php';
+		if(!file_exists($current_view)) throw new Exception("La vue de l'action est introuvable");
 
 		if(!empty($data)) extract($data);
 
 		require_once $header;
-		require_once $view;
+		require_once $current_view;
 		require_once $footer;
 	}
 
