@@ -20,7 +20,7 @@ class MyView {
 		if(!empty($styles)) {
 			foreach ($styles as $style) {
 				$filename = WEB_ROOT.'app/webroot/css/'.$style.'.css';
-				if(file_get_contents($filename)) {
+				if($this->isUrlFileExist($filename)) {
 					$this->styles[] = $filename;
 				} else throw new Exception('La feuille de style "'.$style.'.css" est introuvable', 1);
 			}
@@ -37,7 +37,7 @@ class MyView {
 		if(is_array($scripts) && !empty($scripts)) {
 			foreach ($scripts as $script) {
 				$filename = WEB_ROOT.'app/webroot/js/'.$script.'.js';
-				if(file_get_contents($filename)) {
+				if($this->isUrlFileExist($filename)) {
 					$this->scripts[] = '<script type="text/javascript" src="'.$filename.'"></script>';
 				} else throw new Exception('Le script "'.$script.'.js" est introuvable', 1);
 			}
@@ -58,6 +58,16 @@ class MyView {
 	 */
 	public function getScripts() {
 		return $this->scripts;
+	}
+
+	/**
+	 * [isUrlFileExist Check si un fichier existe à partir de son URL]
+	 * @param  [type]  $file_url [URL du fichier]
+	 * @return boolean           [description]
+	 */
+	private function isUrlFileExist($file_url) {
+		$headers = get_headers($file_url);
+		return stripos($headers[0], "200 OK") ? true : false;
 	}
 
 }
