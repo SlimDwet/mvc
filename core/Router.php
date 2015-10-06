@@ -58,7 +58,7 @@ class Router {
 		$controller_file = ucfirst(self::$controller.'Controller');
 		if(file_exists(APP_DIR.'Controllers'.DS.$controller_file.'.php')) $controller = new $controller_file();
 			else throw new Exception("Le controller $controller_file n'existe pas");
-		if(method_exists($controller, self::$action)) $controller->{self::$action}();
+		if(method_exists($controller, self::$action)) $controller->{self::$action}(self::$other_params);
 			else throw new Exception("La méthode ".self::$action." du controller $controller_file n'existe pas");
 	}
 

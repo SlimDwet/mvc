@@ -15,7 +15,8 @@ class MyModel {
 	}
 
 	/**
-	 * Retourne la liste de résultats recherchés
+	 * [select Retourne la liste de résultats recherchés]
+	 * @return [object] [Liste des résultats]
 	 */
 	public function select() {
 		global $bdd;
@@ -48,7 +49,8 @@ class MyModel {
 	}
 
 	/**
-	 * Insert des données en BDD
+	 * [insert Insert des données en BDD]
+	 * @return [type] [Nombre de lignes affectés]
 	 */
 	public function insert() {
 		$args = func_get_args();
@@ -78,7 +80,8 @@ class MyModel {
 	}
 
 	/**
-	 * Met à jour des données en BDD
+	 * [update Met à jour des données en BDD]
+	 * @return [type] [Nombre de lignes affectés]
 	 */
 	public function update() {
 		$args = func_get_args();
@@ -131,12 +134,19 @@ class MyModel {
 		return $result;
 	}
 
+	/**
+	 * [formateData Formate une information pour son utilisation dans une requête SQL]
+	 * @param  [type] $value [description]
+	 * @return [type]        [description]
+	 */
 	private function formateData($value) {
 		return (gettype($value) === 'string') ? '"'.(string) $value.'"' : $value;
 	}
 
 	/**
-	 * Exécute la requête SQL et retourne un résultat sour forme d'objet/tableau d'objet
+	 * [getQuery Exécute une requête SQL]
+	 * @param  [type] $sql [Requête SQL]
+	 * @return [type]      [Résultat sour forme d'objet/tableau d'objet]
 	 */
 	private function getQuery($sql) {
 		global $bdd;
@@ -151,7 +161,9 @@ class MyModel {
 	}
 
 	/**
-	 * Exécute la requête SQL et retourne le nombre de lignes affectés
+	 * [getExec Exécute une requête SQL]
+	 * @param  [type] $sql [Requête SQL]
+	 * @return [type]      [Retourne le nombre de lignes affectés]
 	 */
 	private function getExec($sql) {
 		global $bdd;
@@ -164,7 +176,9 @@ class MyModel {
 	}
 
 	/**
-	 * Construction de la partie WHERE d'une requête
+	 * [getWhere Construction de la partie WHERE d'une requête SQL]
+	 * @param  [type] $where [description]
+	 * @return [type]        [description]
 	 */
 	private function getWhere($where) {
 		$query = false;
