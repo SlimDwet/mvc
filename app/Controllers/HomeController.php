@@ -5,9 +5,8 @@ class HomeController extends MyController {
 	protected $models = array('Home');
 
 	public function index() {
-		// $this->View->addStyles(array('styles'));
-		echo "<== TO DO ==><br>- Améliorer l'import des CSS/JS avec le support d'une css/js seule au lieu d'un array<br>
-		- Gérer le reverse routing";
+		$this->View->addStyles('styles');
+		$this->set();
 	}
 
 	public function liste($params = null) {

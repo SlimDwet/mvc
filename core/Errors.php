@@ -21,16 +21,6 @@ class Errors {
 				$color = '#21BA23';
 				$title = 'NOTICE';
 				break;
-			case E_PARSE:
-				$bg_color = 'rgba(255, 237, 110, 0.29)';
-				$color = '#BAB821';
-				$title = 'SYNTAXE';
-				break;
-			case E_STRICT:
-				$bg_color = 'rgba(42, 152, 244, 0.29)';
-				$color = '#006EFF';
-				$title = 'STRICT (attention aux futures versions de PHP)';
-				break;
 			case E_USER_WARNING:
 				$bg_color = 'rgba(255, 181, 84, 0.29)';
 				$color = '#FFA500';

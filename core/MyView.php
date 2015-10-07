@@ -14,9 +14,9 @@ class MyView {
 	 * [addStyles Ajout des CSS]
 	 * @param array $styles [description]
 	 */
-	public function addStyles($styles = array()) {
-		if(!is_array($styles)) throw new Exception("Les feuilles de styles sont attendus sous forme de tableau de string)", 1);
+	public function addStyles($styles) {
 		
+		$styles = (array) $styles;
 		if(!empty($styles)) {
 			foreach ($styles as $style) {
 				$filename = WEB_ROOT.'app/webroot/css/'.$style.'.css';
@@ -32,13 +32,13 @@ class MyView {
 	 * @param array $scripts [description]
 	 */
 	public function addScripts($scripts) {
-		if(!is_array($scripts)) throw new Exception("Les scripts sont attendus sous forme de tableau de string)", 1);
 
-		if(is_array($scripts) && !empty($scripts)) {
+		$scripts = (array) $scripts;
+		if(!empty($scripts)) {
 			foreach ($scripts as $script) {
 				$filename = WEB_ROOT.'app/webroot/js/'.$script.'.js';
 				if($this->isUrlFileExist($filename)) {
-					$this->scripts[] = '<script type="text/javascript" src="'.$filename.'"></script>';
+					$this->scripts[] = $filename;
 				} else throw new Exception('Le script "'.$script.'.js" est introuvable', 1);
 			}
 		}

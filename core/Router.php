@@ -5,8 +5,11 @@ class Router {
 	private static $controller;
 	private static $action = 'index';
 	private static $other_params = array();
+	private static $routing_rules = array();
 
 	public static function parse() {
+		// Chargement des routes personnalisés
+		self::loadRoutingRules();
 		$query = self::getQueryData();
 		self::parseParameters($query);
 	}
@@ -41,18 +44,25 @@ class Router {
 			// Controller et action par défaut
 			self::$controller = DEF_CONTROLLER;
 		} else {
-			// Controller et action demandés
-			self::$controller = $query[0];
-			$cont_act[] = self::$controller;
-			if(isset($query[1])) {
-				self::$action = $query[1];
-				$cont_act[] = self::$action;
-			}
+			// On vérifie si la route correspond à une route personnalisée
+			if(isset(self::$routing_rules[implode('/', $query)])) {
+				$custom_rule = self::$routing_rules[implode('/', $query)];
+				self::$controller = $custom_rule['controller'];
+				self::$action = $custom_rule['action'];
+			} else {
+				// Controller et action demandés
+				self::$controller = $query[0];
+				$cont_act[] = self::$controller;
+				if(isset($query[1])) {
+					self::$action = $query[1];
+					$cont_act[] = self::$action;
+				}
 
-			if($nb_params > 2) {
-				$other_params = array_diff($query, $cont_act);
+				if($nb_params > 2) {
+					$other_params = array_diff($query, $cont_act);
+				}
+				self::$other_params = array_merge($other_params);
 			}
-			self::$other_params = array_merge($other_params);
 		}
 
 		$controller_file = ucfirst(self::$controller.'Controller');
@@ -76,6 +86,18 @@ class Router {
 	 */
 	public static function getAction() {
 		return self::$action;
+	}
+
+	/**
+	 * [loadRoutingRules Charge les routes personnalisés]
+	 * @return [type] [description]
+	 */
+	private static function loadRoutingRules() {
+		$routing_filename = APP_DIR.'Config/routing.php';
+		if(file_exists($routing_filename)) {
+			require_once $routing_filename;
+			if(isset($routing)) self::$routing_rules = $routing;
+		}
 	}
 
 }
