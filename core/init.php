@@ -4,7 +4,7 @@
 define('DS', DIRECTORY_SEPARATOR);
 
 // Chargement des configs
-require_once 'config.php';
+require_once dirname(__DIR__).'/app/Config/config.php';
 
 // Path et inclusions de fichiers
 set_include_path(CORE_DIR.':'.APP_DIR);
